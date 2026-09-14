@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="movies">Фильмы</string>
+    <string name="favorites">Избранное</string>
+    <string name="search">Поиск...</string>
+    <string name="movie_details">Детали фильма</string>
+    <string name="navigate_back">Назад</string>
+    <string name="movie_poster">Постер фильма</string>
+    <string name="movie_number">Фильм №%1$d</string>
+    <string name="movie_details_description">Здесь будет подробная информация о фильме.</string>
 </resources>
