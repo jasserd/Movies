@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.movies.presentation.ui.screens.favorites.FavoritesScreen
-import com.example.movies.presentation.ui.screens.movies.MovieDetailsScreen
-import com.example.movies.presentation.ui.screens.movies.MoviesScreen
+import com.example.movies.presentation.ui.screens.movies.details.MovieDetailsScreen
+import com.example.movies.presentation.ui.screens.movies.list.MoviesScreen
 
 @Composable
 fun AppNavHost(

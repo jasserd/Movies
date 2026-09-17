@@ -87,8 +87,7 @@ fun MovieCard(
                     }
                 }
                 Text(
-                    // TODO: Extract Text
-                    text = "${movie.year} • ${movie.durationMinutes} мин",
+                    text = "${movie.year}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -119,12 +118,6 @@ fun MovieCard(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                    Text(
-                        // TODO: Extract Text
-                        text = "Реж. ${movie.director}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
             }
         }

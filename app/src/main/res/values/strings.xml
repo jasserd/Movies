@@ -8,4 +8,5 @@
     <string name="movie_poster">Постер фильма</string>
     <string name="movie_number">Фильм №%1$d</string>
     <string name="movie_details_description">Здесь будет подробная информация о фильме.</string>
+    <string name="favorites_empty">В избранном пока ничего нет</string>
 </resources>
