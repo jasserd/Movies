@@ -6,11 +6,11 @@ sealed interface MoviesIntent {
         val query: String
     ) : MoviesIntent
 
-    data class FavoriteClicked(
-        val movieId: Int
-    ) : MoviesIntent
+    data object RetryClicked : MoviesIntent
 
     data object NextPageRequested : MoviesIntent
 
-    data object RetryClicked : MoviesIntent
+//    data class FavoriteClicked(
+//        val movieId: Int
+//    ) : MoviesIntent
 }

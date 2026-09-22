@@ -1,6 +1,5 @@
 package com.example.movies.presentation.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.movies.R
 import com.example.movies.domain.models.Movie
 
@@ -44,12 +45,11 @@ fun MovieCard(
         )
     ) {
         Row {
-            Image(
-                // TODO: !!!
+            AsyncImage(
+                model = movie.posterUrl,
                 modifier = Modifier
                     .width(96.dp)
                     .fillMaxHeight(),
-                painter = painterResource(R.drawable.example_image),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -113,7 +113,10 @@ fun MovieCard(
                             tint = Color.Unspecified
                         )
                         Text(
-                            text = movie.rating.toString(),
+                            text = stringResource(
+                                R.string.movie_rating,
+                                movie.rating
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )

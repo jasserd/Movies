@@ -15,13 +15,20 @@ sealed interface MoviesContentState {
         val movies: List<Movie>,
         val currentPage: Int,
         val totalPages: Int,
-        val isNextPageLoading: Boolean = false
+        val nextPageState: NextPageState = NextPageState.Idle
     ) : MoviesContentState {
         val canLoadNextPage: Boolean
             get() = currentPage < totalPages
     }
 
-    data class Error(
-        val message: String
-    ) : MoviesContentState
+    data object Error : MoviesContentState
+}
+
+sealed interface NextPageState {
+
+    data object Idle : NextPageState
+
+    data object Loading : NextPageState
+
+    data object Error : NextPageState
 }

@@ -9,4 +9,8 @@
     <string name="movie_number">Фильм №%1$d</string>
     <string name="movie_details_description">Здесь будет подробная информация о фильме.</string>
     <string name="favorites_empty">В избранном пока ничего нет</string>
+    <string name="movies_loading_error">Не удалось загрузить фильмы</string>
+    <string name="movies_list_empty">По вашему запросу ничего не найдено</string>
+    <string name="retry">Повторить</string>
+    <string name="movie_rating">%1$.1f</string>
 </resources>
