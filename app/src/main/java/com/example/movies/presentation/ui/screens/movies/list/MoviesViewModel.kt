@@ -16,10 +16,12 @@ import kotlin.coroutines.cancellation.CancellationException
 class MoviesViewModel @Inject constructor(
     private val repository: MoviesRepository
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(MoviesUiState())
-    private var moviesJob: Job? = null
 
     val uiState = _uiState.asStateFlow()
+
+    private var moviesJob: Job? = null
 
     init {
         loadMovies(

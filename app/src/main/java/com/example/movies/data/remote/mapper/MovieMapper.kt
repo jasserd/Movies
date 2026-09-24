@@ -5,7 +5,7 @@ import com.example.movies.data.remote.dto.MoviesPageDto
 import com.example.movies.domain.models.Movie
 import com.example.movies.domain.models.MoviesPage
 
-private const val POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500"
+internal const val POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
 fun MovieDto.toDomain(
     genreNamesById: Map<Int, String>

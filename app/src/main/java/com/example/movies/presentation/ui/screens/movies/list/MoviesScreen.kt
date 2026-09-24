@@ -70,7 +70,6 @@ fun MoviesScreen(
             )
         }
     ) { innerPadding ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

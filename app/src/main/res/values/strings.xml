@@ -6,11 +6,15 @@
     <string name="movie_details">Детали фильма</string>
     <string name="navigate_back">Назад</string>
     <string name="movie_poster">Постер фильма</string>
-    <string name="movie_number">Фильм №%1$d</string>
     <string name="movie_details_description">Здесь будет подробная информация о фильме.</string>
     <string name="favorites_empty">В избранном пока ничего нет</string>
     <string name="movies_loading_error">Не удалось загрузить фильмы</string>
+    <string name="movie_details_loading_error">Не удалось загрузить детальную информацию о фильме</string>
     <string name="movies_list_empty">По вашему запросу ничего не найдено</string>
     <string name="retry">Повторить</string>
     <string name="movie_rating">%1$.1f</string>
+    <string name="movie_year">%1$d г.</string>
+    <string name="movie_duration">%1$d мин.</string>
+    <string name="movie_director">Режиссёр: %1$s</string>
+    <string name="movie_overview_empty">Описание отсутствует</string>
 </resources>
