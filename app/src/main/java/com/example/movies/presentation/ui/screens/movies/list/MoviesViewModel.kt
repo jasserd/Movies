@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
@@ -23,6 +24,8 @@ class MoviesViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     private var moviesJob: Job? = null
+
+    private var favoritesJob: Job? = null
 
     private var favoriteIds: Set<Int> = emptySet()
 
@@ -46,6 +49,7 @@ class MoviesViewModel @Inject constructor(
             }
 
             MoviesIntent.RetryClicked -> {
+                observeFavorites()
                 loadMovies(
                     query = _uiState.value.query,
                     useDebounce = false
@@ -172,30 +176,49 @@ class MoviesViewModel @Inject constructor(
         } ?: return
 
         viewModelScope.launch {
-            if (targetMovie.isFavorite) {
-                repository.removeFavorite(movieId)
-            } else {
-                repository.addFavorite(targetMovie)
+            try {
+                if (targetMovie.isFavorite) {
+                    repository.removeFavorite(movieId)
+                } else {
+                    repository.addFavorite(targetMovie)
+                }
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                moviesJob?.cancel()
+                _uiState.value = _uiState.value.copy(
+                    content = MoviesContentState.Error
+                )
             }
         }
     }
 
     private fun observeFavorites() {
-        viewModelScope.launch {
-            repository.observeFavorites().collect { favorites ->
-                favoriteIds = favorites.map { movie ->
-                    movie.id
-                }.toSet()
+        favoritesJob?.cancel()
 
-                val content = _uiState.value.content as? MoviesContentState.Content
-                    ?: return@collect
-
-                _uiState.value = _uiState.value.copy(
-                    content = content.copy(
-                        movies = withFavoriteIds(content.movies)
+        favoritesJob = viewModelScope.launch {
+            repository.observeFavorites()
+                .catch { exception ->
+                    if (exception is CancellationException) throw exception
+                    moviesJob?.cancel()
+                    _uiState.value = _uiState.value.copy(
+                        content = MoviesContentState.Error
                     )
-                )
-            }
+                }
+                .collect { favorites ->
+                    favoriteIds = favorites.map { movie ->
+                        movie.id
+                    }.toSet()
+
+                    val content = _uiState.value.content as? MoviesContentState.Content
+                        ?: return@collect
+
+                    _uiState.value = _uiState.value.copy(
+                        content = content.copy(
+                            movies = withFavoriteIds(content.movies)
+                        )
+                    )
+                }
         }
     }
 
