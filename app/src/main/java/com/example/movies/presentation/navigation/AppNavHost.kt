@@ -28,7 +28,11 @@ fun AppNavHost(
         }
 
         composable<FavoritesRoute> {
-            FavoritesScreen()
+            FavoritesScreen(
+                onMovieClick = { movieId ->
+                    navController.navigate(MovieDetailsRoute(movieId))
+                }
+            )
         }
 
         composable<MovieDetailsRoute> {

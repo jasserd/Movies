@@ -47,15 +47,15 @@ fun MoviesScreen(
 
 
     fun onQueryChanged(newQuery: String) {
-        viewModel.onIntent(MoviesIntent.QueryChanged(query = newQuery))
+        viewModel.onIntent(MoviesIntent.QueryChanged(newQuery))
     }
 
     fun onRetryClick() {
         viewModel.onIntent(MoviesIntent.RetryClicked)
     }
 
-    fun onFavoriteClick(id: Int) {
-
+    fun onFavoriteClick(movieId: Int) {
+        viewModel.onIntent(MoviesIntent.FavoriteClicked(movieId))
     }
 
     fun onNextPageRequested() {

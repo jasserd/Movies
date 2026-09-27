@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

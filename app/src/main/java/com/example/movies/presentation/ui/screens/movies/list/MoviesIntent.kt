@@ -10,7 +10,7 @@ sealed interface MoviesIntent {
 
     data object NextPageRequested : MoviesIntent
 
-//    data class FavoriteClicked(
-//        val movieId: Int
-//    ) : MoviesIntent
+    data class FavoriteClicked(
+        val movieId: Int
+    ) : MoviesIntent
 }

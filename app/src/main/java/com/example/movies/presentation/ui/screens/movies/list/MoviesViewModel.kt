@@ -2,6 +2,7 @@ package com.example.movies.presentation.ui.screens.movies.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movies.domain.models.Movie
 import com.example.movies.domain.repositories.MoviesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -23,7 +24,10 @@ class MoviesViewModel @Inject constructor(
 
     private var moviesJob: Job? = null
 
+    private var favoriteIds: Set<Int> = emptySet()
+
     init {
+        observeFavorites()
         loadMovies(
             query = "",
             useDebounce = false
@@ -50,6 +54,10 @@ class MoviesViewModel @Inject constructor(
 
             MoviesIntent.NextPageRequested -> {
                 loadNextPage()
+            }
+
+            is MoviesIntent.FavoriteClicked -> {
+                handleFavoriteStatus(intent.movieId)
             }
         }
     }
@@ -79,7 +87,7 @@ class MoviesViewModel @Inject constructor(
                 _uiState.value =
                     _uiState.value.copy(
                         content = MoviesContentState.Content(
-                            movies = page.movies,
+                            movies = withFavoriteIds(page.movies),
                             currentPage = page.currentPage,
                             totalPages = page.totalPages,
                         )
@@ -130,7 +138,7 @@ class MoviesViewModel @Inject constructor(
                     content = latestContent.copy(
                         movies = (
                                 latestContent.movies +
-                                        loadedPage.movies
+                                        withFavoriteIds(loadedPage.movies)
                                 ).distinctBy { movie ->
                                 movie.id
                             },
@@ -152,6 +160,48 @@ class MoviesViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    private fun handleFavoriteStatus(movieId: Int) {
+        val content = _uiState.value.content as? MoviesContentState.Content
+            ?: return
+
+        val targetMovie = content.movies.firstOrNull { movie ->
+            movie.id == movieId
+        } ?: return
+
+        viewModelScope.launch {
+            if (targetMovie.isFavorite) {
+                repository.removeFavorite(movieId)
+            } else {
+                repository.addFavorite(targetMovie)
+            }
+        }
+    }
+
+    private fun observeFavorites() {
+        viewModelScope.launch {
+            repository.observeFavorites().collect { favorites ->
+                favoriteIds = favorites.map { movie ->
+                    movie.id
+                }.toSet()
+
+                val content = _uiState.value.content as? MoviesContentState.Content
+                    ?: return@collect
+
+                _uiState.value = _uiState.value.copy(
+                    content = content.copy(
+                        movies = withFavoriteIds(content.movies)
+                    )
+                )
+            }
+        }
+    }
+
+    private fun withFavoriteIds(movies: List<Movie>): List<Movie> {
+        return movies.map { movie ->
+            movie.copy(isFavorite = movie.id in favoriteIds)
         }
     }
 
